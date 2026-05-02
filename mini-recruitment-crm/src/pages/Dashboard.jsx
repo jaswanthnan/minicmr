@@ -168,20 +168,19 @@ export default function Dashboard({ setPage }) {
 
   return (
     <div>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 32,
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '40px 0',
         position: 'sticky',
-        top: -16,
+        top: -40,
         zIndex: 10,
-        background: '#f4f6f8',
-        padding: '16px 0',
-        margin: '-16px 0 32px 0',
-        borderBottom: '1px solid #e2e8f0'
+        background: '#f4f6f8', 
+        borderBottom: '1px solid #e2e8f0',
+        margin: '-40px 0 32px 0'
       }}>
-        <Title level={2} style={{ margin: 0, color: '#334155' }}>Analytics Dashboard</Title>
+        <Title level={2} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Analytics Dashboard</Title>
         <Space size="middle">
           <Button
             type="primary"

@@ -53,31 +53,39 @@ function App() {
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider
-        width={250}
+    <Layout style={{ minHeight: '100vh', background: '#f4f6f8' }}>
+      <Sider 
+        width={280} 
         collapsed={collapsed}
-        className="custom-sidebar"
-        style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0, transition: 'all 0.2s' }}
+        collapsible
+        trigger={null}
+        className="custom-sidebar" 
+        style={{ 
+          height: '100vh', 
+          position: 'sticky', 
+          top: 0, 
+          left: 0,
+          zIndex: 100,
+          boxShadow: '2px 0 8px rgba(0,0,0,0.15)'
+        }}
       >
-        <div style={{
-          padding: '20px 16px',
-          color: 'white',
-          fontSize: '18px',
-          fontWeight: 'bold',
-          borderBottom: '1px solid #1e293b',
+        <div style={{ 
+          padding: '24px 16px', 
+          color: 'white', 
+          fontSize: '20px', 
+          fontWeight: 'bold', 
+          borderBottom: '1px solid #1e293b', 
           marginBottom: '10px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: collapsed ? 'center' : 'space-between',
-          gap: '12px'
+          justifyContent: collapsed ? 'center' : 'space-between'
         }}>
           {!collapsed && <span>Mini CRM</span>}
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          <Button 
+            type="text" 
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} 
             onClick={() => setCollapsed(!collapsed)}
-            style={{ color: 'white', fontSize: '16px', padding: 0 }}
+            style={{ color: 'white', fontSize: '18px' }}
           />
         </div>
         <Menu
@@ -85,6 +93,7 @@ function App() {
           mode="inline"
           selectedKeys={[page]}
           onClick={(e) => setPage(e.key)}
+          style={{ borderRight: 0 }}
           items={[
             { key: 'dashboard', icon: <DashboardOutlined />, label: 'Dashboard' },
             { key: 'candidates', icon: <UserOutlined />, label: 'Candidates' },
@@ -94,20 +103,22 @@ function App() {
             { key: 'jd', icon: <FileTextOutlined />, label: 'JD Generator' },
           ]}
         />
-        <div style={{ position: 'absolute', bottom: 20, width: '100%', textAlign: 'center' }}>
-          <Button type="text" style={{ color: '#ef4444' }} onClick={handleLogout}>
+        <div style={{ position: 'absolute', bottom: 30, width: '100%', textAlign: 'center' }}>
+          <Button type="text" style={{ color: '#ff4d4f', fontWeight: 600 }} onClick={handleLogout}>
             {collapsed ? "" : "Logout"}
           </Button>
         </div>
       </Sider>
-      <Layout style={{ marginLeft: collapsed ? 80 : 250, transition: 'all 0.2s' }}>
-        <Content style={{ padding: '16px', background: '#f4f6f8', minHeight: '100vh' }}>
-          {page === "dashboard" && <Dashboard setPage={setPage} />}
-          {page === "candidates" && <Candidates />}
-          {page === "jobs" && <Jobs />}
-          {page === "search" && <SearchPage />}
-          {page === "ai" && <AISummariser />}
-          {page === "jd" && <JDGenerator />}
+      <Layout style={{ background: '#f4f6f8' }}>
+        <Content style={{ padding: '40px', minHeight: '100vh' }}>
+          <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
+            {page === "dashboard" && <Dashboard setPage={setPage} />}
+            {page === "candidates" && <Candidates />}
+            {page === "jobs" && <Jobs />}
+            {page === "search" && <SearchPage />}
+            {page === "ai" && <AISummariser />}
+            {page === "jd" && <JDGenerator />}
+          </div>
         </Content>
       </Layout>
     </Layout>

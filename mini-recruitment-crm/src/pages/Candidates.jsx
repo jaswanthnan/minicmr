@@ -94,9 +94,19 @@ function Candidates() {
 
     return (
         <div style={{ backgroundColor: '#f8fafc', padding: '0px', minHeight: '100%' }}>
-            {/* Header Section */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, padding: '8px 4px' }}>
-                <Title level={3} style={{ margin: 0, color: '#1e293b' }}>Candidates Management</Title>
+            <div style={{ 
+                position: 'sticky', 
+                top: -40, 
+                zIndex: 10, 
+                background: '#f8fafc', 
+                padding: '40px 0', 
+                margin: '-40px 0 32px 0',
+                borderBottom: '1px solid #e2e8f0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
+                <Title level={3} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Candidates Management</Title>
             </div>
 
             {/* Content Section */}
