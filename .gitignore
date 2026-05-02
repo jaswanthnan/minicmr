@@ -1,0 +1,7 @@
+mini-recruitment-crm/node_modules/
+mini-recruitment-crm/serve/node_modules/
+.env
+mini-recruitment-crm/serve/.env
+.DS_Store
+dist/
+build/
