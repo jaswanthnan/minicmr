@@ -120,6 +120,7 @@ function CandidateTable({ candidates, refresh, onEdit, onSelectionChange }) {
                 columnDefs={colDefs}
                 pagination={true}
                 paginationPageSize={10}
+                paginationPageSizeSelector={[10, 20, 50]}
                 rowSelection="multiple"
                 suppressCellFocus={true}
                 onSelectionChanged={onSelectionChanged}

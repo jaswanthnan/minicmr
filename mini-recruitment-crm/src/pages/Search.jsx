@@ -281,6 +281,14 @@ const SearchPage = () => {
                         ) : filteredResults.length > 0 ? (
                             <List
                                 dataSource={filteredResults}
+                                pagination={{
+                                    pageSize: 10,
+                                    showSizeChanger: true,
+                                    pageSizeOptions: ['10', '20', '50'],
+                                    position: 'bottom',
+                                    align: 'center',
+                                    style: { marginTop: 32 }
+                                }}
                                 renderItem={(item, idx) => {
                                     const s = statusColors[item.status] || { bg: '#f1f5f9', color: '#475569', dot: '#94a3b8' };
                                     const av = avatarColors[idx % avatarColors.length];

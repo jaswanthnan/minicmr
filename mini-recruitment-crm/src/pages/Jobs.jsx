@@ -165,6 +165,14 @@ function Jobs() {
             <List
                 loading={loading}
                 dataSource={jobs}
+                pagination={{
+                    pageSize: 6,
+                    showSizeChanger: true,
+                    pageSizeOptions: ['6', '12', '24'],
+                    position: 'bottom',
+                    align: 'center',
+                    style: { marginTop: 32 }
+                }}
                 grid={{
                     gutter: 24,
                     xs: 1,
