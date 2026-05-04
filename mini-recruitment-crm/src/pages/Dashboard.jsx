@@ -218,15 +218,15 @@ export default function Dashboard({ setPage }) {
 
   return (
     <div>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         padding: '40px 0',
         position: 'sticky',
         top: -40,
         zIndex: 10,
-        background: '#f4f6f8', 
+        background: '#f4f6f8',
         borderBottom: '1px solid #e2e8f0',
         margin: '-40px 0 32px 0'
       }}>
@@ -342,8 +342,8 @@ export default function Dashboard({ setPage }) {
 
       <Row gutter={24} style={{ marginBottom: 32 }}>
         <Col span={12}>
-          <Card 
-            variant="borderless" 
+          <Card
+            variant="borderless"
             style={{ borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.04)', height: '100%', background: 'white' }}
             title={<span style={{ fontWeight: 700, color: '#1e293b' }}>Recruitment Performance</span>}
           >
@@ -366,7 +366,7 @@ export default function Dashboard({ setPage }) {
                       <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                   />
                 </PieChart>
@@ -395,8 +395,8 @@ export default function Dashboard({ setPage }) {
         </Col>
 
         <Col span={12}>
-          <Card 
-            variant="borderless" 
+          <Card
+            variant="borderless"
             style={{ borderRadius: 16, boxShadow: '0 4px 20px rgba(0,0,0,0.04)', height: '100%', background: 'white' }}
             title={<span style={{ fontWeight: 700, color: '#1e293b' }}>Hiring Progress</span>}
           >
@@ -415,7 +415,7 @@ export default function Dashboard({ setPage }) {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                   />
                 </PieChart>
@@ -446,4 +446,4 @@ export default function Dashboard({ setPage }) {
 
     </div>
   );
-}
+}

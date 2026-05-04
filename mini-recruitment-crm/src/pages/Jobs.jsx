@@ -67,24 +67,25 @@ function Jobs() {
     };
 
     return (
-        <div style={{ padding: '24px' }}>
+        <div style={{ padding: '0 0 24px 0' }}>
             <div style={{ 
-                position: 'sticky', 
-                top: -40, 
-                zIndex: 10, 
-                background: '#f4f6f8', 
-                padding: '40px 0', 
-                margin: '-40px 0 32px 0',
                 display: 'flex', 
                 justifyContent: 'space-between', 
-                alignItems: 'center',
-                borderBottom: '1px solid #e2e8f0'
+                alignItems: 'center', 
+                padding: '40px 0',
+                position: 'sticky',
+                top: -40,
+                zIndex: 10,
+                background: '#f4f6f8',
+                borderBottom: '1px solid #e2e8f0',
+                margin: '-40px 0 32px 0'
             }}>
                 <Title level={2} style={{ margin: 0, fontWeight: 700, color: '#1e293b' }}>Job Board</Title>
                 <Button
                     type="primary"
                     size="large"
                     icon={<PlusOutlined />}
+                    style={{ borderRadius: '12px', height: '48px', background: '#4f46e5' }}
                     onClick={() => {
                         setIsEdit(false);
                         setEditData(null);
