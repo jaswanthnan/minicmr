@@ -103,6 +103,30 @@ const QUOTES = [
     sub: '"An employee\'s motivation is a direct result of interactions with their manager."',
     author: "— Bob Nelson",
   },
+  {
+    line1: "Lead with purpose,",
+    line2: "hire with passion.",
+    gradient: "linear-gradient(90deg, #6366f1, #06b6d4)",
+    glow: "rgba(99,102,241,0.25)",
+    sub: '"Passion is the difference between having a job or having a career."',
+    author: "— Unknown",
+  },
+  {
+    line1: "The future belongs",
+    line2: "to the curious.",
+    gradient: "linear-gradient(90deg, #f472b6, #fb923c)",
+    glow: "rgba(244,114,182,0.25)",
+    sub: '"Curiosity is the engine of achievement."',
+    author: "— Ken Robinson",
+  },
+  {
+    line1: "Empower teams,",
+    line2: "inspire success.",
+    gradient: "linear-gradient(90deg, #2dd4bf, #3b82f6)",
+    glow: "rgba(45,212,191,0.25)",
+    sub: '"The strength of the team is each individual member."',
+    author: "— Phil Jackson",
+  },
 ];
 
 export default function Login() {
@@ -189,8 +213,15 @@ export default function Login() {
           {/* Animated Quote */}
           <div style={{ transition:"opacity 0.45s ease, transform 0.45s ease", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(14px)" }}>
             <div style={{ fontSize:52, fontWeight:900, lineHeight:1.1, marginBottom:24, letterSpacing:"-0.02em" }}>
-              <span style={{ color:"white" }}>{q.line1}<br /></span>
-              <span style={{ background: q.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", display:"inline-block" }}>{q.line2}</span>
+              <div style={{ color:"white" }}>{q.line1}</div>
+              <div style={{
+                display: "inline-block",
+                background: q.gradient,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+              }}>{q.line2}</div>
             </div>
 
             <p style={{ color:"rgba(255,255,255,0.6)", fontSize:16, maxWidth:360, lineHeight:1.8, fontStyle:"italic", margin:"0 0 10px" }}>

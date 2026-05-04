@@ -2,6 +2,21 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f4f6f8;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 .navbar {
@@ -74,4 +89,14 @@ button {
 
 .custom-menu .ant-menu-item:hover {
   color: white !important;
+}
+
+/* Hide scrollbar inside modal */
+.ant-modal-body::-webkit-scrollbar {
+  display: none;
+}
+
+.ant-modal-body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

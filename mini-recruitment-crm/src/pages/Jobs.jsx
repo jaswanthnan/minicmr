@@ -164,57 +164,104 @@ function Jobs() {
             <List
                 loading={loading}
                 dataSource={jobs}
+                grid={{
+                    gutter: 24,
+                    xs: 1,
+                    sm: 1,
+                    md: 2,
+                    lg: 2,
+                    xl: 2,
+                    xxl: 2,
+                }}
                 renderItem={(job) => (
-                    <Card
-                        key={job._id}
-                        style={{ marginBottom: 16 }}
-                        hoverable
-                        actions={[
-                            <Button type="link" onClick={() => handleEdit(job)}>Edit</Button>,
-                            <Popconfirm
-                                title="Are you sure you want to delete this job?"
-                                onConfirm={async () => {
-                                    await axios.delete(`http://localhost:5000/api/jobs/${job._id}`);
-                                    fetchJobs();
-                                    message.success("Job deleted successfully");
-                                }}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Button type="link" danger>Delete</Button>
-                            </Popconfirm>
-                        ]}
-                    >
-                        <Row justify="space-between" align="top">
-                            <Col>
-                                <Title level={4} style={{ margin: 0 }}>{job.title}</Title>
-                                <Text strong style={{ color: '#1890ff' }}>{job.company}</Text>
-                            </Col>
-                            <Col style={{ textAlign: 'right' }}>
-                                <Space direction="vertical" align="end">
-                                    <Space>
-                                        <Tag color={(job.status || 'Open') === 'Open' ? 'green' : 'red'}>
+                    <List.Item style={{ height: '100%' }}>
+                        <Card
+                            key={job._id}
+                            style={{ 
+                                borderRadius: '16px', 
+                                border: 'none', 
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                overflow: 'hidden'
+                            }}
+                            bodyStyle={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '24px' }}
+                            hoverable
+                            actions={[
+                                <Button type="link" onClick={() => handleEdit(job)} style={{ fontWeight: 600 }}>Edit</Button>,
+                                <Popconfirm
+                                    title="Are you sure you want to delete this job?"
+                                    onConfirm={async () => {
+                                        await axios.delete(`http://localhost:5000/api/jobs/${job._id}`);
+                                        fetchJobs();
+                                        message.success("Job deleted successfully");
+                                    }}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <Button type="link" danger style={{ fontWeight: 600 }}>Delete</Button>
+                                </Popconfirm>
+                            ]}
+                        >
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                <Row justify="space-between" align="top" style={{ marginBottom: 4 }}>
+                                    <Col span={18}>
+                                        <Title level={4} style={{ margin: 0, fontWeight: 700, fontSize: '18px' }}>{job.title}</Title>
+                                        <Text strong style={{ color: '#4f46e5', fontSize: '13px' }}>{job.company}</Text>
+                                    </Col>
+                                    <Col span={6} style={{ textAlign: 'right' }}>
+                                        <Tag color={(job.status || 'Open') === 'Open' ? 'green' : 'red'} style={{ borderRadius: '6px', marginRight: 0, fontSize: '10px', padding: '0 8px' }}>
                                             {(job.status || 'Open').toUpperCase()}
                                         </Tag>
-                                        <Tag color="blue"><DollarOutlined /> ${job.salary?.toLocaleString()}</Tag>
-                                    </Space>
-                                    <Tag color="cyan" style={{ marginRight: 0 }}><EnvironmentOutlined /> {job.location}</Tag>
+                                    </Col>
+                                </Row>
+
+                                <Space style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap' }}>
+                                    <Tag icon={<DollarOutlined />} color="blue" style={{ borderRadius: '6px', border: 'none', background: '#eff6ff', color: '#3b82f6' }}>${job.salary?.toLocaleString()}</Tag>
+                                    <Tag icon={<EnvironmentOutlined />} color="cyan" style={{ borderRadius: '6px', border: 'none', background: '#ecfeff', color: '#0891b2' }}>{job.location}</Tag>
                                 </Space>
-                            </Col>
-                        </Row>
-                        <div style={{ marginTop: 12 }}>
-                            {job.skillsRequired?.map((skill, index) => (
-                                <Tag key={`${skill}-${index}`} color="purple">{skill}</Tag>
-                            ))}
-                        </div>
-                        <Divider dashed style={{ margin: '12px 0' }} />
-                        <Paragraph ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}>
-                            {job.description}
-                        </Paragraph>
-                        <Space>
-                            <SolutionOutlined /> <Text type="secondary">{job.experienceRequired}+ years experience</Text>
-                        </Space>
-                    </Card>
+
+                                {/* Fixed height skills container with scroll if needed */}
+                                <div style={{ 
+                                    marginTop: 16, 
+                                    height: '64px', 
+                                    overflowY: 'auto',
+                                    scrollbarWidth: 'none',
+                                    msOverflowStyle: 'none'
+                                }}>
+                                    {job.skillsRequired?.map((skill, index) => (
+                                        <Tag key={`${skill}-${index}`} color="purple" style={{ 
+                                            borderRadius: '4px', 
+                                            marginBottom: '6px', 
+                                            background: '#f5f3ff', 
+                                            border: 'none', 
+                                            color: '#7c3aed',
+                                            fontSize: '11px'
+                                        }}>{skill}</Tag>
+                                    ))}
+                                </div>
+
+                                <Divider dashed style={{ margin: '16px 0' }} />
+                                
+                                <div style={{ height: '40px', marginBottom: 12 }}>
+                                    <Paragraph 
+                                        ellipsis={{ rows: 2 }} 
+                                        style={{ color: '#64748b', fontSize: '13px', margin: 0 }}
+                                    >
+                                        {job.description || "No description provided."}
+                                    </Paragraph>
+                                </div>
+
+                                <div style={{ marginTop: 'auto' }}>
+                                    <Space>
+                                        <SolutionOutlined style={{ color: '#94a3b8' }} /> 
+                                        <Text type="secondary" style={{ fontSize: '12px', fontWeight: 500 }}>{job.experienceRequired}+ years experience</Text>
+                                    </Space>
+                                </div>
+                            </div>
+                        </Card>
+                    </List.Item>
                 )}
             />
         </div>
