@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Input, Typography, Divider, Alert, Button, Modal, Space, message } from "antd";
+import { Input, Typography, Divider, Alert, Button, Modal, Space, message, Card } from "antd";
 import { UserAddOutlined, ExportOutlined, DeleteOutlined } from "@ant-design/icons";
 import CandidateForm from "../components/CandidateForm";
 import CandidateTable from "../components/CandidateTable";
@@ -94,29 +94,29 @@ function Candidates() {
 
     return (
         <div style={{ backgroundColor: '#f8fafc', padding: '0px', minHeight: '100%' }}>
-            <div style={{ 
-                position: 'sticky', 
-                top: -40, 
-                zIndex: 10, 
-                background: '#f8fafc', 
-                padding: '40px 0', 
-                margin: '-40px 0 32px 0',
+            <div style={{
+                position: 'sticky',
+                top: -40,
+                zIndex: 10,
+                background: '#f8fafc',
+                padding: '40px 0',
+                margin: '-40px 0 0 0',
                 borderBottom: '1px solid #e2e8f0',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }}>
-                <Title level={3} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Candidates Management</Title>
+                <Title level={2} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Candidates Management</Title>
             </div>
 
             {/* Content Section */}
-            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 16 }} />}
+            <div style={{ marginTop: 32 }}>
+                {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 24, borderRadius: '12px' }} />}
 
                 {/* Search Bar and Bulk Actions */}
-                <div style={{ marginBottom: 24, padding: '16px', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
-                    <div style={{ color: '#64748b', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-                        Elasticsearch Powered Search
+                <Card style={{ marginBottom: 32, borderRadius: '20px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+                    <div style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>
+                        Advanced Search Engine
                     </div>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                         <Search
@@ -125,45 +125,43 @@ function Candidates() {
                             enterButton="Search"
                             size="middle"
                             onSearch={handleSearch}
-                            style={{ flex: 1, maxWidth: '600px' }}
+                            style={{ flex: 1 }}
                         />
-                        <Space size="small">
-                            {selectedCandidates.length > 0 && (
-                                <>
-                                    <Button
-                                        icon={<ExportOutlined />}
-                                        onClick={handleExport}
-                                        style={{ borderRadius: '6px' }}
-                                    >
-                                        Export CSV
-                                    </Button>
-                                    <Button
-                                        danger
-                                        type="primary"
-                                        icon={<DeleteOutlined />}
-                                        onClick={handleDeleteSelected}
-                                        style={{ borderRadius: '6px' }}
-                                    >
-                                        Delete ({selectedCandidates.length})
-                                    </Button>
-                                </>
-                            )}
-                            <Button
-                                type="primary"
-                                size="middle"
-                                icon={<UserAddOutlined />}
-                                style={{ backgroundColor: '#8b5cf6', borderColor: '#8b5cf6', borderRadius: '6px' }}
-                                onClick={() => {
-                                    setIsEdit(false);
-                                    setEditData(null);
-                                    setIsModalOpen(true);
-                                }}
-                            >
-                                Add Candidate
-                            </Button>
-                        </Space>
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<UserAddOutlined />}
+                            style={{ background: '#4f46e5', borderRadius: '10px', fontWeight: 600, whiteSpace: 'nowrap' }}
+                            onClick={() => {
+                                setIsEdit(false);
+                                setEditData(null);
+                                setIsModalOpen(true);
+                            }}
+                        >
+                            Add Candidate
+                        </Button>
+                        {selectedCandidates.length > 0 && (
+                            <Space size="small">
+                                <Button
+                                    icon={<ExportOutlined />}
+                                    onClick={handleExport}
+                                    style={{ borderRadius: '10px' }}
+                                >
+                                    Export CSV
+                                </Button>
+                                <Button
+                                    danger
+                                    type="primary"
+                                    icon={<DeleteOutlined />}
+                                    onClick={handleDeleteSelected}
+                                    style={{ borderRadius: '10px' }}
+                                >
+                                    Delete ({selectedCandidates.length})
+                                </Button>
+                            </Space>
+                        )}
                     </div>
-                </div>
+                </Card>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                     <Title level={4} style={{ margin: 0, fontSize: '18px' }}>
@@ -192,6 +190,13 @@ function Candidates() {
                 }}
                 footer={null}
                 width={700}
+                styles={{
+                    body: {
+                        maxHeight: '70vh',
+                        overflowY: 'auto',
+                        paddingRight: '8px',
+                    }
+                }}
             >
                 <CandidateForm
                     isEdit={isEdit}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Form, Input, Button, Card, Row, Col, Typography, Space, Tag, List, Divider, message, Modal, Select } from "antd";
+import { Form, Input, Button, Card, Row, Col, Typography, Space, Tag, List, Divider, message, Modal, Select, Popconfirm } from "antd";
 import { PlusOutlined, EnvironmentOutlined, DollarOutlined, SolutionOutlined } from "@ant-design/icons";
 
 const { Title, Text, Paragraph } = Typography;
@@ -107,6 +107,13 @@ function Jobs() {
                 }}
                 footer={null}
                 width={600}
+                styles={{
+                    body: {
+                        maxHeight: '70vh',
+                        overflowY: 'auto',
+                        paddingRight: '8px',
+                    }
+                }}
             >
                 <Form
                     form={form}
@@ -164,10 +171,18 @@ function Jobs() {
                         hoverable
                         actions={[
                             <Button type="link" onClick={() => handleEdit(job)}>Edit</Button>,
-                            <Button type="link" danger onClick={async () => {
-                                await axios.delete(`http://localhost:5000/api/jobs/${job._id}`);
-                                fetchJobs();
-                            }}>Delete</Button>
+                            <Popconfirm
+                                title="Are you sure you want to delete this job?"
+                                onConfirm={async () => {
+                                    await axios.delete(`http://localhost:5000/api/jobs/${job._id}`);
+                                    fetchJobs();
+                                    message.success("Job deleted successfully");
+                                }}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <Button type="link" danger>Delete</Button>
+                            </Popconfirm>
                         ]}
                     >
                         <Row justify="space-between" align="top">

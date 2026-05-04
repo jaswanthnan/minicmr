@@ -22,7 +22,7 @@ function CandidateForm({ refresh, editData, isEdit }) {
         try {
             const data = {
                 ...values,
-                skills: values.skills.split(",").map((skill) => skill.trim()),
+                skills: values.skills ? values.skills.split(",").map((skill) => skill.trim()) : [],
                 experience: Number(values.experience),
             };
 
@@ -36,7 +36,13 @@ function CandidateForm({ refresh, editData, isEdit }) {
             form.resetFields();
             refresh();
         } catch (err) {
-            message.error(isEdit ? "Failed to update candidate" : "Failed to add candidate");
+            console.error("Submission Error:", err.response?.data || err.message);
+            const errorMsg = err.response?.data?.error || "";
+            if (errorMsg.includes("E11000") || errorMsg.includes("duplicate key")) {
+                message.error("A candidate with this email already exists!");
+            } else {
+                message.error(isEdit ? "Failed to update candidate" : "Failed to add candidate");
+            }
         }
     };
 

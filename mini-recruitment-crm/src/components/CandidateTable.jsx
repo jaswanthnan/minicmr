@@ -3,7 +3,7 @@ import axios from "axios";
 import { AgGridReact } from "ag-grid-react";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Button, Space, message, Avatar, Tag } from "antd";
+import { Button, Space, message, Avatar, Tag, Popconfirm } from "antd";
 import { RobotOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import SmartMatchModal from "./SmartMatchModal";
 
@@ -92,13 +92,19 @@ function CandidateTable({ candidates, refresh, onEdit, onSelectionChange }) {
                         icon={<EditOutlined style={{ color: '#3b82f6' }} />}
                         onClick={() => onEdit(params.data)}
                     />
-                    <Button
-                        size="small"
-                        type="text"
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => deleteCandidate(params.data._id || params.data.id)}
-                    />
+                    <Popconfirm
+                        title="Are you sure you want to delete this candidate?"
+                        onConfirm={() => deleteCandidate(params.data._id || params.data.id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button
+                            size="small"
+                            type="text"
+                            danger
+                            icon={<DeleteOutlined />}
+                        />
+                    </Popconfirm>
                 </Space>
             ),
             flex: 1,

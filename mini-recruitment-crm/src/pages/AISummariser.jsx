@@ -71,114 +71,124 @@ function AISummariser() {
   };
 
   return (
-    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 32px)' }}>
+    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 32px)', background: '#f4f6f8' }}>
       <div style={{ 
         textAlign: 'left', 
         marginBottom: 32,
         position: 'sticky',
-        top: -24,
+        top: -40,
         zIndex: 10,
         background: '#f4f6f8',
-        padding: '24px 0',
-        margin: '-24px 0 0 0',
-        borderBottom: '1px solid #e2e8f0'
+        padding: '40px 0', 
+        margin: '-40px 0 0 0',
+        borderBottom: '1px solid #e2e8f0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        <Title level={2} style={{ margin: 0 }}><RobotOutlined style={{ marginRight: 12, color: '#1890ff' }} /> AI CV Summariser</Title>
-        <Text type="secondary">Extract key insights and ask questions about any CV using Cloudflare AI</Text>
+        <div>
+          <Title level={2} style={{ margin: 0, fontWeight: 700, color: '#1e293b' }}>
+            <RobotOutlined style={{ marginRight: 12, color: '#4f46e5' }} /> AI CV Summariser
+          </Title>
+          <Text style={{ color: '#64748b', fontSize: '15px' }}>Extract key insights and ask questions about any CV using Cloudflare AI</Text>
+        </div>
+        {fileName && (
+          <Tag icon={<FilePdfOutlined />} color="indigo" style={{ borderRadius: '12px', padding: '6px 16px', fontSize: '14px', fontWeight: 600 }}>
+            Analyzing: {fileName}
+          </Tag>
+        )}
       </div>
 
-      {/* Results / Content Area */}
       <div style={{ 
         flex: 1, 
-        maxWidth: '800px', 
+        maxWidth: '900px', 
         margin: '0 auto', 
         width: '100%',
-        paddingBottom: '120px', // Space for sticky bottom bar
-        paddingTop: '40px'
+        paddingBottom: '140px',
+        paddingTop: '20px'
       }}>
-        {!cvText && !loading && !summary && (
-          <div style={{ textAlign: 'center', marginTop: '10vh', color: '#94a3b8' }}>
-            <RobotOutlined style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }} />
-            <Title level={4} style={{ color: '#64748b' }}>Ready to analyze</Title>
-            <Text type="secondary">Upload a candidate's CV below to generate an instant summary.</Text>
-          </div>
-        )}
 
-        {fileName && (
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <Tag icon={<FilePdfOutlined />} color="processing" style={{ borderRadius: '12px', padding: '4px 12px' }}>
-              Active CV: {fileName}
-            </Tag>
-          </div>
-        )}
 
         {loading && (
-          <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <Spin size="large" description="Cloudflare AI is reading the CV..." />
+          <div style={{ textAlign: 'center', marginTop: 60 }}>
+            <Spin size="large" tip="Cloudflare AI is reading the CV..." />
           </div>
         )}
 
         {summary && !loading && (
-          <div style={{ animation: 'fadeIn 0.5s ease' }}>
+          <Space direction="vertical" size="xlarge" style={{ width: '100%', animation: 'fadeIn 0.6s ease-out' }}>
             <Card 
-              variant="outlined" 
-              style={{ borderRadius: '20px', border: '1px solid #e2e8f0', background: 'white', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}
-              title={<span style={{ color: '#64748b', fontWeight: 500 }}><RobotOutlined style={{ marginRight: 8 }} /> Analysis Insights</span>}
+              style={{ borderRadius: '24px', border: 'none', background: 'white', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)' }}
+              title={<span style={{ color: '#1e293b', fontWeight: 700, fontSize: '18px' }}><RobotOutlined style={{ marginRight: 12, color: '#4f46e5' }} /> Executive Summary</span>}
             >
-              <Paragraph style={{ whiteSpace: 'pre-wrap', fontSize: '16px', lineHeight: '1.8', color: '#1e293b' }}>
+              <Paragraph style={{ whiteSpace: 'pre-wrap', fontSize: '16px', lineHeight: '1.8', color: '#334155' }}>
                 {summary}
               </Paragraph>
             </Card>
-          </div>
+
+            <div style={{ padding: '0 8px' }}>
+              <Title level={5} style={{ color: '#64748b', marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Suggested Questions</Title>
+              <Space wrap size="small">
+                {[
+                  "What are their top 3 technical strengths?",
+                  "Assess their leadership potential based on this CV.",
+                  "Identify any potential red flags or gaps.",
+                  "Suggest 3 technical interview questions for this candidate."
+                ].map(q => (
+                  <Button 
+                    key={q}
+                    onClick={() => { setQuestion(q); }}
+                    style={{ borderRadius: '20px', background: 'white', border: '1px solid #e2e8f0', color: '#4f46e5', fontWeight: 500 }}
+                  >
+                    {q}
+                  </Button>
+                ))}
+              </Space>
+            </div>
+          </Space>
         )}
       </div>
 
-      {/* Bottom Command Bar */}
       <div style={{ 
         position: 'sticky', 
-        bottom: 24, 
+        bottom: 32, 
         zIndex: 10,
-        maxWidth: '800px', 
+        maxWidth: '900px', 
         margin: '0 auto', 
         width: '100%'
       }}>
         <div style={{
-          background: 'white',
-          padding: '12px 24px',
-          borderRadius: '30px',
-          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(16px)',
+          padding: '16px 24px',
+          borderRadius: '24px',
+          boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
-          border: '1px solid #e2e8f0'
+          gap: '16px',
+          border: '1px solid rgba(255,255,255,0.5)'
         }}>
-          <Upload
-            beforeUpload={() => false}
-            onChange={handleUpload}
-            showUploadList={false}
-          >
-            <Button 
-              shape="circle" 
-              icon={<CloudUploadOutlined style={{ fontSize: '18px' }} />} 
-              style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}
-            />
+          <Upload beforeUpload={() => false} onChange={handleUpload} showUploadList={false}>
+            <Button shape="circle" size="large" icon={<CloudUploadOutlined />} style={{ background: '#4f46e5', color: 'white', border: 'none' }} />
           </Upload>
           <Input 
-            placeholder={cvText ? "Ask anything about this candidate..." : "Click the icon to upload a CV and begin..."}
+            placeholder={cvText ? "Ask anything about this candidate..." : "Upload a CV to start chatting..."}
             variant="borderless"
             value={question}
             onChange={e => setQuestion(e.target.value)}
             onPressEnter={askQuestion}
-            style={{ fontSize: '16px', flex: 1 }}
+            style={{ fontSize: '16px', flex: 1, color: '#1e293b' }}
             disabled={answering || loading}
           />
           <Button 
             type="primary" 
             shape="circle" 
+            size="large"
             icon={<SendOutlined />} 
             disabled={!question.trim() || answering || !cvText}
             onClick={askQuestion}
             loading={answering}
+            style={{ background: '#4f46e5' }}
           />
         </div>
       </div>
