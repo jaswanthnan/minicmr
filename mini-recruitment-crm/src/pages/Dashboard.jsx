@@ -348,7 +348,7 @@ export default function Dashboard({ setPage }) {
             title={<span style={{ fontWeight: 700, color: '#1e293b' }}>Recruitment Performance</span>}
           >
             <div style={{ width: '100%', height: 300, position: 'relative' }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                 <PieChart>
                   <Pie
                     data={jobStatusesData}
@@ -401,7 +401,7 @@ export default function Dashboard({ setPage }) {
             title={<span style={{ fontWeight: 700, color: '#1e293b' }}>Hiring Progress</span>}
           >
             <div style={{ width: '100%', height: 300, position: 'relative' }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                 <PieChart>
                   <Pie
                     data={pipelineData}

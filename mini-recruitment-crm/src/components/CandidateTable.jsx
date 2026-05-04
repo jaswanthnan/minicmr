@@ -3,7 +3,9 @@ import axios from "axios";
 import { AgGridReact } from "ag-grid-react";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Button, Space, message, Avatar, Tag, Popconfirm } from "antd";
+import { Button, Space, message, Avatar, Tag, Popconfirm, Popover, Typography } from "antd";
+
+const { Text } = Typography;
 import { RobotOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import SmartMatchModal from "./SmartMatchModal";
 
@@ -59,8 +61,75 @@ function CandidateTable({ candidates, refresh, onEdit, onSelectionChange }) {
         {
             field: "skills",
             headerName: "Skills",
-            valueGetter: params => params.data.skills?.join(", "),
-            flex: 1
+            flex: 2,
+            cellRenderer: (params) => {
+                const skills = params.data.skills || [];
+                if (skills.length === 0) return "-";
+
+                const visibleSkills = skills.slice(0, 3);
+                const extraSkills = skills.slice(3);
+                const remainingCount = extraSkills.length;
+
+                return (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center', height: '100%' }}>
+                        {visibleSkills.map((skill, i) => (
+                            <Tag
+                                key={i}
+                                style={{
+                                    margin: 0,
+                                    borderRadius: '6px',
+                                    background: '#f5f3ff',
+                                    border: 'none',
+                                    color: '#7c3aed',
+                                    fontWeight: 600,
+                                    fontSize: '11px'
+                                }}
+                            >
+                                {skill}
+                            </Tag>
+                        ))}
+                        {remainingCount > 0 && (
+                            <Popover
+                                title={<Text strong style={{ fontSize: '13px' }}>Extra Skills</Text>}
+                                content={
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', maxWidth: '280px', padding: '4px 0' }}>
+                                        {extraSkills.map((s, idx) => (
+                                            <Tag key={idx} style={{
+                                                margin: 0,
+                                                borderRadius: '6px',
+                                                background: '#f5f3ff',
+                                                border: 'none',
+                                                color: '#7c3aed',
+                                                fontWeight: 600,
+                                                fontSize: '11px'
+                                            }}>
+                                                {s}
+                                            </Tag>
+                                        ))}
+                                    </div>
+                                }
+                                trigger="hover"
+                                placement="top"
+                            >
+                                <Tag
+                                    style={{
+                                        margin: 0,
+                                        borderRadius: '6px',
+                                        background: '#f1f5f9',
+                                        border: 'none',
+                                        color: '#64748b',
+                                        fontWeight: 700,
+                                        fontSize: '11px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    +{remainingCount}
+                                </Tag>
+                            </Popover>
+                        )}
+                    </div>
+                );
+            }
         },
         {
             field: "status",
@@ -119,8 +188,7 @@ function CandidateTable({ candidates, refresh, onEdit, onSelectionChange }) {
                 rowData={candidates}
                 columnDefs={colDefs}
                 pagination={true}
-                paginationPageSize={10}
-                paginationPageSizeSelector={[10, 20, 50]}
+                paginationPageSize={20}
                 rowSelection="multiple"
                 suppressCellFocus={true}
                 onSelectionChanged={onSelectionChanged}

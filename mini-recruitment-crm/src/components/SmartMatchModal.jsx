@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Button, Typography, Space, Divider, Progress, Card, Spin, message } from "antd";
+import { Modal, Select, Button, Typography, Space, Divider, Progress, Card, Spin, message, Tag } from "antd";
 import axios from "axios";
 import { RobotOutlined, CheckCircleOutlined } from "@ant-design/icons";
 
@@ -53,72 +53,156 @@ const SmartMatchModal = ({ visible, onClose, candidate }) => {
 
     // Helper to parse match score from AI text if possible
     const getScore = (text) => {
-        const match = text?.match(/(\d+)\/100/);
+        if (!text) return 0;
+        // Look for X/100, Score: X, Match Score: X, etc.
+        const match = text.match(/(\d+)\/100/) || text.match(/Score:\s*(\d+)/i) || text.match(/Match Score:\s*(\d+)/i);
         return match ? parseInt(match[1]) : 75; // Default to 75 if not found
+    };
+
+    // Helper to remove redundant score lines from the analysis text
+    const getCleanedAnalysis = (text) => {
+        if (!text) return "";
+        return text
+            .split('\n')
+            .filter(line => !line.toLowerCase().includes('match score:') && !line.toLowerCase().includes('score:'))
+            .join('\n')
+            .trim();
     };
 
     return (
         <Modal
-            title={<span><RobotOutlined /> AI Smart Match</span>}
+            title={<span><RobotOutlined style={{ color: '#4f46e5' }} /> AI Smart Match</span>}
             open={visible}
             onCancel={onClose}
             footer={[
-                <Button key="back" onClick={onClose}>Close</Button>,
-                <Button key="submit" type="primary" loading={loadingMatch} onClick={handleMatch}>
+                <Button key="back" onClick={onClose} style={{ borderRadius: '8px' }}>Close</Button>,
+                <Button key="submit" type="primary" loading={loadingMatch} onClick={handleMatch} style={{ background: '#4f46e5', borderRadius: '8px' }}>
                     Analyze Match
                 </Button>
             ]}
-            width={700}
+            width={750}
+            styles={{ 
+                body: { 
+                    padding: '24px',
+                    backgroundColor: '#f8fafc' 
+                } 
+            }}
         >
-            <div style={{ marginBottom: 20 }}>
-                <Text strong>Candidate:</Text> <Text>{candidate?.name}</Text>
-                <div style={{ marginTop: 8 }}>
-                    <Text strong>Select Job to Match:</Text>
+            {/* Header: Fixed Selection Section */}
+            <div style={{ 
+                background: '#fff', 
+                padding: '20px', 
+                borderRadius: '16px', 
+                marginBottom: '24px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
+                border: '1px solid #f1f5f9'
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                    <div>
+                        <div style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Candidate</div>
+                        <Text strong style={{ fontSize: '18px', color: '#1e293b' }}>{candidate?.name}</Text>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>Select Target Role</div>
                     <Select
-                        placeholder="Select a job"
-                        style={{ width: '100%', marginTop: 8 }}
+                        placeholder="Choose a job to compare against..."
+                        style={{ width: '100%' }}
+                        size="large"
                         onChange={value => setSelectedJob(value)}
                     >
                         {jobs.map(job => (
-                            <Option key={job._id} value={job._id}>{job.title} at {job.company}</Option>
+                            <Option key={job._id} value={job._id}>{job.title} — {job.company}</Option>
                         ))}
                     </Select>
                 </div>
             </div>
 
-            <Divider />
+            {/* Results: Scrollable Area */}
+            <div style={{ 
+                maxHeight: '450px', 
+                overflowY: 'auto', 
+                paddingRight: '8px',
+                scrollbarWidth: 'thin'
+            }}>
+                {loadingMatch ? (
+                    <div style={{ textAlign: 'center', padding: '60px 0', background: '#fff', borderRadius: '16px' }}>
+                        <Spin size="large" description="Our AI is cross-referencing skills and experience..." />
+                    </div>
+                ) : matchResult ? (
+                    <Card variant="borderless" style={{ borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.04)' }}>
+                        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                            <Title level={4} style={{ margin: 0, color: '#64748b', fontSize: '14px', textTransform: 'uppercase' }}>Match Score</Title>
+                            <div style={{ marginTop: 16 }}>
+                                <Progress 
+                                    type="circle" 
+                                    percent={getScore(matchResult)} 
+                                    strokeWidth={8}
+                                    size={160}
+                                    format={percent => (
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span style={{ fontSize: '32px', fontWeight: 800, color: '#1e293b' }}>{percent}%</span>
+                                            <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>MATCH</span>
+                                        </div>
+                                    )}
+                                    strokeColor={{
+                                        '0%': '#6366f1',
+                                        '100%': '#22c55e',
+                                    }}
+                                />
+                            </div>
+                        </div>
 
-            {loadingMatch ? (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                    <Spin size="large" description="Cloudflare AI is analyzing the fit..." />
-                </div>
-            ) : matchResult ? (
-                <Card>
-                    <div style={{ textAlign: 'center', marginBottom: 20 }}>
-                        <Title level={4}>Match Score</Title>
-                        <Progress 
-                            type="circle" 
-                            percent={getScore(matchResult)} 
-                            format={percent => `${percent}%`}
-                            strokeColor={{
-                                '0%': '#108ee9',
-                                '100%': '#87d068',
-                            }}
-                        />
+                        <Divider style={{ margin: '24px 0' }}>
+                            <Tag color="blue" icon={<RobotOutlined />}>AI Analysis</Tag>
+                        </Divider>
+
+                        <Title level={5} style={{ marginBottom: 16 }}>Detailed Breakdown</Title>
+                        <Paragraph style={{ 
+                            whiteSpace: 'pre-wrap', 
+                            color: '#475569', 
+                            lineHeight: '1.6',
+                            fontSize: '14px',
+                            background: '#f8fafc',
+                            padding: '20px',
+                            borderRadius: '12px',
+                            border: '1px solid #f1f5f9'
+                        }}>
+                            {getCleanedAnalysis(matchResult)}
+                        </Paragraph>
+
+                        <div style={{ 
+                            marginTop: 24, 
+                            padding: '16px', 
+                            background: '#f0fdf4', 
+                            borderRadius: '12px', 
+                            border: '1px solid #bbf7d0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 12
+                        }}>
+                            <CheckCircleOutlined style={{ color: '#16a34a', fontSize: '20px' }} />
+                            <Text style={{ color: '#166534', fontSize: '13px', fontWeight: 500 }}>
+                                This recommendation was generated using real-time talent analysis and job requirements.
+                            </Text>
+                        </div>
+                    </Card>
+                ) : (
+                    <div style={{ 
+                        textAlign: 'center', 
+                        color: '#94a3b8', 
+                        padding: '60px 0', 
+                        background: '#fff', 
+                        borderRadius: '16px',
+                        border: '2px dashed #e2e8f0'
+                    }}>
+                        <RobotOutlined style={{ fontSize: '48px', marginBottom: 16, color: '#cbd5e1' }} />
+                        <Title level={5} style={{ color: '#64748b', margin: 0 }}>Ready to Match</Title>
+                        <Text type="secondary">Select a job above to see how well {candidate?.name} fits the role.</Text>
                     </div>
-                    <Title level={5}>Analysis Details</Title>
-                    <Paragraph style={{ whiteSpace: 'pre-wrap' }}>
-                        {matchResult}
-                    </Paragraph>
-                    <div style={{ marginTop: 16, color: '#52c41a' }}>
-                        <CheckCircleOutlined /> Recommendation generated by Cloudflare AI
-                    </div>
-                </Card>
-            ) : (
-                <div style={{ textAlign: 'center', color: '#8c8c8c', padding: '20px' }}>
-                    Select a job and click "Analyze Match" to get AI insights.
-                </div>
-            )}
+                )}
+            </div>
         </Modal>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Input, Typography, Card, Row, Col, List, Tag, Checkbox, Empty, Spin, message, Avatar, Badge } from "antd";
+import { Input, Typography, Card, Row, Col, List, Tag, Checkbox, Empty, Spin, message, Avatar, Badge, Popover, Space } from "antd";
 import { SearchOutlined, FilterOutlined, UserOutlined, MailOutlined, EnvironmentOutlined, StarOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
@@ -94,14 +94,14 @@ const SearchPage = () => {
                 <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 12 }}>
                     <Text style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>Trending:</Text>
                     {['React', 'Node.js', 'Python', 'AWS'].map(tag => (
-                        <Tag 
-                            key={tag} 
+                        <Tag
+                            key={tag}
                             onClick={() => { setQuery(tag); handleSearch(tag); }}
-                            style={{ 
-                                background: '#fff', 
-                                border: '1px solid #e2e8f0', 
-                                color: '#475569', 
-                                borderRadius: 20, 
+                            style={{
+                                background: '#fff',
+                                border: '1px solid #e2e8f0',
+                                color: '#475569',
+                                borderRadius: 20,
                                 padding: '2px 14px',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s',
@@ -138,8 +138,8 @@ const SearchPage = () => {
                     border: '1px solid #f1f5f9',
                     transition: 'all 0.3s ease'
                 }}
-                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 15px 40px rgba(99, 102, 241, 0.15)'}
-                onMouseLeave={e => e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)'}
+                    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 15px 40px rgba(99, 102, 241, 0.15)'}
+                    onMouseLeave={e => e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)'}
                 >
                     <SearchOutlined style={{ color: '#6366f1', fontSize: 22 }} />
                     <input
@@ -279,123 +279,129 @@ const SearchPage = () => {
                                 <Text style={{ display: 'block', marginTop: 16, color: '#94a3b8' }}>Searching candidates…</Text>
                             </div>
                         ) : filteredResults.length > 0 ? (
-                            <List
-                                dataSource={filteredResults}
-                                pagination={{
-                                    pageSize: 10,
-                                    showSizeChanger: true,
-                                    pageSizeOptions: ['10', '20', '50'],
-                                    position: 'bottom',
-                                    align: 'center',
-                                    style: { marginTop: 32 }
-                                }}
-                                renderItem={(item, idx) => {
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                {filteredResults.map((item, idx) => {
                                     const s = statusColors[item.status] || { bg: '#f1f5f9', color: '#475569', dot: '#94a3b8' };
                                     const av = avatarColors[idx % avatarColors.length];
                                     return (
-                                        <List.Item style={{ padding: '0 0 20px 0', border: 'none' }}>
-                                            <Card
-                                                hoverable
-                                                variant="borderless"
-                                                style={{
-                                                    width: '100%',
-                                                    borderRadius: 20,
-                                                    boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                                                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                                    border: '1px solid #f1f5f9',
-                                                    background: '#fff',
-                                                    overflow: 'hidden'
-                                                }}
-                                                styles={{ body: { padding: '24px 28px' } }}
-                                                onMouseEnter={e => {
-                                                    e.currentTarget.style.transform = 'translateY(-4px) scale(1.005)';
-                                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(99, 102, 241, 0.12)';
-                                                    e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.2)';
-                                                }}
-                                                onMouseLeave={e => {
-                                                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                                                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.04)';
-                                                    e.currentTarget.style.borderColor = '#f1f5f9';
-                                                }}
-                                            >
-                                                <Row align="middle" gutter={24}>
-                                                    <Col flex="64px">
-                                                        <Avatar 
-                                                            size={64} 
-                                                            style={{ 
-                                                                background: `linear-gradient(135deg, ${av} 0%, ${av}dd 100%)`, 
-                                                                fontSize: 24, 
-                                                                fontWeight: 700, 
-                                                                boxShadow: `0 8px 16px ${av}33`
-                                                            }}
-                                                        >
-                                                            {item.name?.[0]?.toUpperCase() || <UserOutlined />}
-                                                        </Avatar>
-                                                    </Col>
-                                                    <Col flex="1">
-                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                                                <Title level={4} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>{item.name}</Title>
-                                                                <div style={{
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    gap: 6,
-                                                                    padding: '4px 12px',
-                                                                    borderRadius: 20,
-                                                                    background: s.bg,
-                                                                    color: s.color,
-                                                                    fontSize: 12,
-                                                                    fontWeight: 700,
-                                                                    textTransform: 'uppercase',
-                                                                    letterSpacing: '0.5px'
-                                                                }}>
-                                                                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot }} />
-                                                                    {item.status || 'Unknown'}
-                                                                </div>
-                                                            </div>
-                                                            <StarOutlined style={{ color: '#cbd5e1', fontSize: 20, cursor: 'pointer' }} />
-                                                        </div>
-
-                                                        <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14 }}>
-                                                                <MailOutlined style={{ fontSize: 14 }} />
-                                                                {item.email}
-                                                            </div>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14 }}>
-                                                                <EnvironmentOutlined style={{ fontSize: 14 }} />
-                                                                {item.location}
+                                        <Card
+                                            key={item._id || idx}
+                                            hoverable
+                                            variant="borderless"
+                                            style={{
+                                                width: '100%',
+                                                borderRadius: 20,
+                                                boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                border: '1px solid #f1f5f9',
+                                                background: '#fff',
+                                                overflow: 'hidden'
+                                            }}
+                                            styles={{ body: { padding: '24px 28px' } }}
+                                            onMouseEnter={e => {
+                                                e.currentTarget.style.transform = 'translateY(-4px) scale(1.005)';
+                                                e.currentTarget.style.boxShadow = '0 20px 40px rgba(99, 102, 241, 0.12)';
+                                                e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.2)';
+                                            }}
+                                            onMouseLeave={e => {
+                                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.04)';
+                                                e.currentTarget.style.borderColor = '#f1f5f9';
+                                            }}
+                                        >
+                                            <Row align="middle" gutter={24}>
+                                                <Col flex="64px">
+                                                    <Avatar 
+                                                        size={64} 
+                                                        style={{ 
+                                                            background: `linear-gradient(135deg, ${av} 0%, ${av}dd 100%)`, 
+                                                            fontSize: 24, 
+                                                            fontWeight: 700, 
+                                                            boxShadow: `0 8px 16px ${av}33`
+                                                        }}
+                                                    >
+                                                        {item.name?.[0]?.toUpperCase() || <UserOutlined />}
+                                                    </Avatar>
+                                                </Col>
+                                                <Col flex="1">
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                                            <Title level={4} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>{item.name}</Title>
+                                                            <div style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                gap: 6,
+                                                                padding: '4px 12px',
+                                                                borderRadius: 20,
+                                                                background: s.bg,
+                                                                color: s.color,
+                                                                fontSize: 12,
+                                                                fontWeight: 700,
+                                                                textTransform: 'uppercase',
+                                                                letterSpacing: '0.5px'
+                                                            }}>
+                                                                <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot }} />
+                                                                {item.status || 'Unknown'}
                                                             </div>
                                                         </div>
+                                                        <StarOutlined style={{ color: '#cbd5e1', fontSize: 20, cursor: 'pointer' }} />
+                                                    </div>
 
-                                                        {item.skills?.length > 0 && (
-                                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                                                                {item.skills.map((skill, i) => (
-                                                                    <Tag
-                                                                        key={`${skill}-${i}`}
-                                                                        style={{
-                                                                            borderRadius: 8,
-                                                                            fontSize: 12,
-                                                                            fontWeight: 600,
-                                                                            margin: 0,
-                                                                            padding: '4px 12px',
-                                                                            background: selectedSkills.includes(skill) ? '#6366f1' : '#f8fafc',
-                                                                            color: selectedSkills.includes(skill) ? '#fff' : '#475569',
-                                                                            border: selectedSkills.includes(skill) ? '1px solid #6366f1' : '1px solid #e2e8f0',
-                                                                            transition: 'all 0.2s'
-                                                                        }}
-                                                                    >
-                                                                        {skill}
+                                                    <div style={{ display: 'flex', gap: 24, marginBottom: 16 }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14 }}>
+                                                            <MailOutlined style={{ fontSize: 14 }} />
+                                                            {item.email}
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748b', fontSize: 14 }}>
+                                                            <EnvironmentOutlined style={{ fontSize: 14 }} />
+                                                            {item.location}
+                                                        </div>
+                                                    </div>
+
+                                                    {item.skills?.length > 0 && (
+                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                                            {item.skills.slice(0, 5).map((skill, i) => (
+                                                                <Tag
+                                                                    key={`${skill}-${i}`}
+                                                                    style={{
+                                                                        borderRadius: 8,
+                                                                        fontSize: 12,
+                                                                        fontWeight: 600,
+                                                                        margin: 0,
+                                                                        padding: '4px 12px',
+                                                                        background: selectedSkills.includes(skill) ? '#6366f1' : '#f8fafc',
+                                                                        color: selectedSkills.includes(skill) ? '#fff' : '#475569',
+                                                                        border: selectedSkills.includes(skill) ? '1px solid #6366f1' : '1px solid #e2e8f0',
+                                                                        transition: 'all 0.2s'
+                                                                    }}
+                                                                >
+                                                                    {skill}
+                                                                </Tag>
+                                                            ))}
+                                                            {item.skills.length > 5 && (
+                                                                <Popover
+                                                                    content={
+                                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxWidth: 280 }}>
+                                                                            {item.skills.slice(5).map((skill, i) => (
+                                                                                <Tag key={i} style={{ borderRadius: 8, fontSize: 12, fontWeight: 600, margin: 0, padding: '4px 12px', background: '#f8fafc', color: '#475569', border: '1px solid #e2e8f0' }}>{skill}</Tag>
+                                                                            ))}
+                                                                        </div>
+                                                                    }
+                                                                    title="Additional Skills"
+                                                                >
+                                                                    <Tag style={{ borderRadius: 8, fontSize: 12, fontWeight: 700, margin: 0, padding: '4px 12px', background: '#f1f5f9', color: '#64748b', border: 'none', cursor: 'pointer' }}>
+                                                                        +{item.skills.length - 5}
                                                                     </Tag>
-                                                                ))}
-                                                            </div>
-                                                        )}
-                                                    </Col>
-                                                </Row>
-                                            </Card>
-                                        </List.Item>
+                                                                </Popover>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </Col>
+                                            </Row>
+                                        </Card>
                                     );
-                                }}
-                            />
+                                })}
+                            </div>
                         ) : (
                             <div style={{ textAlign: 'center', padding: '80px 0' }}>
                                 <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'linear-gradient(135deg,#ede9fe,#dbeafe)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
