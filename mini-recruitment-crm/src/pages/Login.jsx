@@ -214,13 +214,8 @@ export default function Login() {
           <div style={{ transition:"opacity 0.45s ease, transform 0.45s ease", opacity: fade ? 1 : 0, transform: fade ? "translateY(0)" : "translateY(14px)" }}>
             <div style={{ fontSize:52, fontWeight:900, lineHeight:1.1, marginBottom:24, letterSpacing:"-0.02em" }}>
               <div style={{ color:"white" }}>{q.line1}</div>
-              <div style={{
-                display: "inline-block",
+              <div className="gradient-text" style={{
                 background: q.gradient,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                color: "transparent",
               }}>{q.line2}</div>
             </div>
 
@@ -251,12 +246,24 @@ export default function Login() {
             ))}
           </div>
 
-          {/* Stats */}
-          <div style={{ display:"flex", gap:36, marginTop:52 }}>
+          {/* Stats Cards */}
+          <div style={{ display:"flex", gap:20, marginTop:52 }}>
             {[["500+","Candidates"],["120+","Jobs Posted"],["98%","Satisfaction"]].map(([val, label]) => (
-              <div key={label}>
-                <div style={{ fontSize:28, fontWeight:800, background: q.gradient, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", display:"inline-block", transition:"background 0.8s ease" }}>{val}</div>
-                <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", fontWeight:500, marginTop:2 }}>{label}</div>
+              <div key={label} style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                padding: "16px 20px",
+                borderRadius: "16px",
+                flex: 1,
+                backdropFilter: "blur(4px)",
+                transition: "all 0.3s ease"
+              }}>
+                <div className="gradient-text" style={{ 
+                  fontSize:24, 
+                  fontWeight:800, 
+                  background: q.gradient,
+                }}>{val}</div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)", fontWeight:600, marginTop:4, textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
               </div>
             ))}
           </div>
