@@ -168,9 +168,9 @@ function Jobs() {
                         <Col key={job._id} xs={24} sm={24} md={12} lg={12}>
                             <Card
                                 key={job._id}
-                                style={{ 
-                                    borderRadius: '16px', 
-                                    border: 'none', 
+                                style={{
+                                    borderRadius: '16px',
+                                    border: 'none',
                                     boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                                     height: '100%',
                                     display: 'flex',
@@ -207,21 +207,21 @@ function Jobs() {
                                             </Tag>
                                         </Col>
                                     </Row>
-    
+
                                     <Space style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap' }}>
                                         <Tag icon={<DollarOutlined />} color="blue" style={{ borderRadius: '6px', border: 'none', background: '#eff6ff', color: '#3b82f6' }}>${job.salary?.toLocaleString()}</Tag>
                                         <Tag icon={<EnvironmentOutlined />} color="cyan" style={{ borderRadius: '6px', border: 'none', background: '#ecfeff', color: '#0891b2' }}>{job.location}</Tag>
                                     </Space>
-    
+
                                     {/* Modern space-efficient skills display */}
                                     <div style={{ marginTop: 16, height: '32px', display: 'flex', alignItems: 'center' }}>
                                         <Space size={[0, 4]} wrap>
                                             {job.skillsRequired?.slice(0, 3).map((skill, index) => (
-                                                <Tag key={`${skill}-${index}`} color="purple" style={{ 
-                                                    borderRadius: '4px', 
+                                                <Tag key={`${skill}-${index}`} color="purple" style={{
+                                                    borderRadius: '4px',
                                                     margin: 0,
-                                                    background: '#f5f3ff', 
-                                                    border: 'none', 
+                                                    background: '#f5f3ff',
+                                                    border: 'none',
                                                     color: '#7c3aed',
                                                     fontSize: '11px',
                                                     fontWeight: 600
@@ -239,15 +239,15 @@ function Jobs() {
                                                     title="Required Skills"
                                                     trigger="hover"
                                                 >
-                                                    <Tag style={{ 
-                                                        borderRadius: '4px', 
+                                                    <Tag style={{
+                                                        borderRadius: '4px',
                                                         margin: 0,
-                                                        background: '#f1f5f9', 
-                                                        border: 'none', 
-                                                        color: '#64748b', 
-                                                        fontSize: '11px', 
-                                                        fontWeight: 700, 
-                                                        cursor: 'pointer' 
+                                                        background: '#f1f5f9',
+                                                        border: 'none',
+                                                        color: '#64748b',
+                                                        fontSize: '11px',
+                                                        fontWeight: 700,
+                                                        cursor: 'pointer'
                                                     }}>
                                                         +{job.skillsRequired.length - 3}
                                                     </Tag>
@@ -255,21 +255,21 @@ function Jobs() {
                                             )}
                                         </Space>
                                     </div>
-    
+
                                     <Divider dashed style={{ margin: '16px 0' }} />
-                                    
+
                                     <div style={{ height: '40px', marginBottom: 12 }}>
-                                        <Paragraph 
-                                            ellipsis={{ rows: 2 }} 
+                                        <Paragraph
+                                            ellipsis={{ rows: 2 }}
                                             style={{ color: '#64748b', fontSize: '13px', margin: 0 }}
                                         >
                                             {job.description || "No description provided."}
                                         </Paragraph>
                                     </div>
-    
+
                                     <div style={{ marginTop: 'auto' }}>
                                         <Space>
-                                            <SolutionOutlined style={{ color: '#94a3b8' }} /> 
+                                            <SolutionOutlined style={{ color: '#94a3b8' }} />
                                             <Text type="secondary" style={{ fontSize: '12px', fontWeight: 500 }}>{job.experienceRequired}+ years experience</Text>
                                         </Space>
                                     </div>
